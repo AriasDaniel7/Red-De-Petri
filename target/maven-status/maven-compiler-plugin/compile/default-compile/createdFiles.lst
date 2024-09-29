@@ -1,0 +1,15 @@
+backend\Petri.class
+frontend\Principal.class
+frontend\PanelDeControl$3.class
+frontend\PanelDeControl$2.class
+frontend\Principal$2.class
+frontend\PanelDeControl.class
+frontend\PanelDeControl$1.class
+backend\entidades\Transicion.class
+frontend\Principal$1.class
+backend\CargarJSON.class
+backend\entidades\Red.class
+frontend\PanelDeControl$4.class
+backend\entidades\Lugar.class
+backend\entidades\Arco.class
+backend\GraficaPetri.class

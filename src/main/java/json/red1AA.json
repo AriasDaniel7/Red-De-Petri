@@ -1,0 +1,30 @@
+{
+  "lugares": [
+    {"id": "P1", "marcas": 1},
+    {"id": "P2", "marcas": 0},
+    {"id": "P3", "marcas": 0},
+    {"id": "P4", "marcas": 2},
+    {"id": "P5", "marcas": 1}
+  ],
+  "transiciones": [
+    {"id": "t1"},
+    {"id": "t2"},
+    {"id": "t3"},
+    {"id": "t4"}
+  ],
+  "arcos": [
+    {"desde": "P1", "hacia": "t1", "peso": 1},
+    {"desde": "t1", "hacia": "P2", "peso": 1},
+    {"desde": "t1", "hacia": "P4", "peso": 2},
+    {"desde": "t1", "hacia": "P3", "peso": 1},
+    {"desde": "P2", "hacia": "t2", "peso": 1},
+    {"desde": "P4", "hacia": "t2", "peso": 1},
+    {"desde": "P3", "hacia": "t2", "peso": 1},
+    {"desde": "t2", "hacia": "P2", "peso": 1},
+    {"desde": "P4", "hacia": "t3", "peso": 2},
+    {"desde": "t3", "hacia": "P5", "peso": 1},
+    {"desde": "P5", "hacia": "t4", "peso": 1},
+    {"desde": "t4", "hacia": "P4", "peso": 1},
+    {"desde": "t4", "hacia": "P3", "peso": 1}
+  ]
+}
