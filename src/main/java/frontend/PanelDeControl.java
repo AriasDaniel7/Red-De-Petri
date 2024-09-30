@@ -475,9 +475,14 @@ public class PanelDeControl extends javax.swing.JFrame {
                 }
                 limpiarComponentes();
                 cargarTablas(this.petri2);
-            } else {
-                JOptionPane.showMessageDialog(this, "Seleccione una transición válida.", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+            } else if (this.petri2 != null) {
+                if (this.petri2.getTransicionesHabilitadas().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No hay transiciones habilitadas.", "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Seleccione una transición válida.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "No hay una red de Petri cargada.", "Error",
