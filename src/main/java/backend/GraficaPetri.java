@@ -99,10 +99,10 @@ public class GraficaPetri {
             Object[] cells = graphAdapter.getChildVertices(parent);
             for (Object cell : cells) {
                 if (graphAdapter.getModel().getValue(cell).equals(ultimaTransicionDisparada)) {
-                    graphAdapter.setCellStyle(mxConstants.STYLE_FILLCOLOR + "=#FF0000;" +
-                            mxConstants.STYLE_FONTCOLOR + "=#FFFFFF;" +
-                            mxConstants.STYLE_FONTSTYLE + "=" + mxConstants.FONT_BOLD,
-                            new Object[] { cell }); // Cambiar color a rojo, letra blanca y negrita
+                    graphAdapter.setCellStyle(mxConstants.STYLE_FILLCOLOR + "=#FF0000;"
+                            + mxConstants.STYLE_FONTCOLOR + "=#FFFFFF;"
+                            + mxConstants.STYLE_FONTSTYLE + "=" + mxConstants.FONT_BOLD,
+                            new Object[]{cell}); // Cambiar color a rojo, letra blanca y negrita
                     break;
                 }
             }
@@ -121,7 +121,7 @@ public class GraficaPetri {
         edgeStyle.put(mxConstants.STYLE_STROKEWIDTH, 2); // Grosor de la arista
         edgeStyle.put(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP); // Posición de la etiqueta
         edgeStyle.put(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_TOP); // Posición vertical de la
-                                                                                         // etiqueta
+        // etiqueta
         edgeStyle.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, "#FFFFFF"); // Color de fondo de la etiqueta
 
         // Usar mxHierarchicalLayout para un diseño jerárquico

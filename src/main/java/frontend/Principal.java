@@ -28,7 +28,8 @@ public class Principal extends javax.swing.JFrame {
         panel.add(jLabel1, "width 100%, height 40!, wrap");
         panel.add(jButton1, "wrap");
         panel.add(jLabel3, "wrap");
-        panel.add(jLabel4, "");
+        panel.add(jLabel4, "wrap");
+        panel.add(jLabel5, "");
     }
 
     /**
@@ -49,6 +50,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -69,6 +71,8 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Daniel David Arias Monroy");
 
+        jLabel5.setText("Mauro Julian Chaparro Sanchez ");
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -84,7 +88,10 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(163, 163, 163)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(jLabel5)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
@@ -97,7 +104,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,6 +158,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

@@ -109,14 +109,13 @@ public class Petri {
     public Petri dispararTransicion(String transicionId) {
         int transicionIdx = transicionIndex.get(transicionId);
 
-        // Crear nueva marcación
         int[] nuevaMarcacion = this.marcacionInicial.clone();
+
         for (int j = 0; j < this.dMenos[transicionIdx].length; j++) {
             nuevaMarcacion[j] -= this.dMenos[transicionIdx][j];
             nuevaMarcacion[j] += this.dMas[transicionIdx][j];
         }
 
-        // Crear nuevo objeto Petri con la nueva marcación
         Petri nuevaPetri = new Petri(this.red);
         nuevaPetri.marcacionInicial = nuevaMarcacion;
         nuevaPetri.ultimaTransicionDisparada = transicionId;
@@ -146,7 +145,7 @@ public class Petri {
 
         model.addColumn("Transiciones Habilitadas");
         for (Transicion transicion : this.transicionesHabilitadas) {
-            model.addRow(new Object[] { transicion.getId() });
+            model.addRow(new Object[]{transicion.getId()});
         }
 
         return model;

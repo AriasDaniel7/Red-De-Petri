@@ -24,53 +24,55 @@ import javax.swing.table.JTableHeader;
  * @author Daniel Arias
  */
 public class PanelDeControl extends javax.swing.JFrame {
-    
+
     private Petri petri1;
     private Petri petri2;
     private GraficaPetri graficaPetri;
-    
+    private boolean estado;
+
     public PanelDeControl() {
         initComponents();
         init();
     }
-    
+
     private void init() {
+        this.estado = false;
         setTitle("Red De Petri");
         setLocationRelativeTo(null);
         initPanel();
     }
-    
+
     private void initPanel() {
         panelPrincipal.setLayout(new MigLayout("fill"));
         panelPrincipal.add(jPanel1, "width 75%, height 100%");
-        
+
         panelPrincipal.add(jPanel2, "width 25%, height 100%");
-        
+
         jPanel2.setLayout(new MigLayout("", "0[center]0", "0[center]push[center]push[center]0"));
         jPanel2.add(jPanel3, "width 100%, wrap");
         jPanel2.add(jPanel4, "width 100%, height 100%, wrap");
         jPanel2.add(jPanel5, "width 100%");
-        
+
         jPanel4.setLayout(new MigLayout("wrap 1", "[grow]", "[][grow]"));
         jPanel4.add(jLabel1, "wrap");
         jPanel4.add(jScrollPane1, "grow");
         jPanel4.add(jScrollPane2, "grow");
         jPanel4.add(jScrollPane3, "grow");
-        
+
         jPanel5.setLayout(new MigLayout("fill", "[center]", "[center]10[center]"));
         jPanel5.add(jScrollPane4, "wrap, span");
         jPanel5.add(jComboBox1, "width 100%");
         jPanel5.add(btnDisparar, "");
         jPanel5.add(btnNormal, "");
     }
-    
+
     private void cargarTablas(Petri petri) {
-        
+
         this.dMasTable.setModel(petri.getTableModeldMas());
         this.dMenosTable.setModel(petri.getTableModeldMenos());
         this.MarcacionInicialTable.setModel(petri.getTableModelMarcacionInicial());
         this.transicionHabilitadaTable.setModel(petri.getTableModelTransicionesHabilitadas());
-        
+
         this.dMasTable.setDefaultRenderer(Object.class, getCentradoRenderer());
         this.dMasTable.setTableHeader(getHeaderNegrilla(dMasTable));
         this.dMenosTable.setDefaultRenderer(Object.class, getCentradoRenderer());
@@ -78,24 +80,24 @@ public class PanelDeControl extends javax.swing.JFrame {
         this.MarcacionInicialTable.setDefaultRenderer(Object.class, getCentradoRenderer());
         this.MarcacionInicialTable.setTableHeader(getHeaderNegrilla(MarcacionInicialTable));
         this.transicionHabilitadaTable.setTableHeader(getHeaderNegrilla(transicionHabilitadaTable));
-        
+
         this.graficaPetri = new GraficaPetri(petri);
         this.graficaPetri.crearPanel(jPanel1);
         jPanel1.revalidate();
         jPanel1.repaint();
-        
+
         this.jComboBox1.removeAllItems();
         for (int i = 0; i < petri.getTransicionesHabilitadas().size(); i++) {
             this.jComboBox1.addItem(petri.getTransicionesHabilitadas().get(i).getId());
         }
     }
-    
+
     private DefaultTableCellRenderer getCentradoRenderer() {
         DefaultTableCellRenderer centradoRenderer = new DefaultTableCellRenderer();
         centradoRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         return centradoRenderer;
     }
-    
+
     private JTableHeader getHeaderNegrilla(JTable tabla) {
         JTableHeader header = tabla.getTableHeader();
         header.setFont(header.getFont().deriveFont(Font.BOLD));
@@ -453,6 +455,7 @@ public class PanelDeControl extends javax.swing.JFrame {
         if (this.petri1 != null) {
             limpiarComponentes();
             cargarTablas(this.petri1);
+            this.estado = !this.estado;
         } else {
             JOptionPane.showMessageDialog(this, "No hay una red de Petri cargada.", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -464,7 +467,12 @@ public class PanelDeControl extends javax.swing.JFrame {
         if (this.petri1 != null) {
             String transicion = (String) jComboBox1.getSelectedItem();
             if (transicion != null && !transicion.isEmpty()) {
-                this.petri2 = petri1.dispararTransicion(transicion);
+                if (this.estado) {
+                    this.petri2 = this.petri1.dispararTransicion(transicion);
+                    this.estado = false;
+                } else {
+                    this.petri2 = this.petri2.dispararTransicion(transicion);
+                }
                 limpiarComponentes();
                 cargarTablas(this.petri2);
             } else {
@@ -475,7 +483,7 @@ public class PanelDeControl extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No hay una red de Petri cargada.", "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }// GEN-LAST:event_btnDispararActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
@@ -487,6 +495,7 @@ public class PanelDeControl extends javax.swing.JFrame {
                 jTextField1.setText(file.getAbsolutePath());
                 CargarJSON cargarJSON = new CargarJSON(file);
                 this.petri1 = new Petri(cargarJSON.cargar());
+                this.estado = true;
                 limpiarComponentes();
                 cargarTablas(this.petri1);
             } else {
@@ -494,7 +503,7 @@ public class PanelDeControl extends javax.swing.JFrame {
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-            
+
         }
     }// GEN-LAST:event_jButton1ActionPerformed
 
