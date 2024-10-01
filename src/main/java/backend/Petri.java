@@ -8,6 +8,7 @@ import backend.entidades.Transicion;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,6 +38,11 @@ public class Petri {
     }
 
     public void cargar_matrices() {
+        // System.out.println();
+        // for (Lugar lugare : this.red.getLugares()) {
+        // System.out.println(lugare);
+        // }
+
         ArrayList<Lugar> lugares = this.red.getLugares();
         ArrayList<Transicion> transiciones = this.red.getTransiciones();
         ArrayList<Arco> arcos = this.red.getArcos();
@@ -83,38 +89,37 @@ public class Petri {
         // imprimirMatriz(dMenos);
         // System.out.println("Marcacion Inicial:");
         // imprimirVector(marcacionInicial);
+
     }
 
     private void calcularTransicionesHabilitadas() {
-        ArrayList<Transicion> transiciones = this.red.getTransiciones();
-        this.transicionesHabilitadas = new ArrayList<>();
-
-        for (int i = 0; i < transiciones.size(); i++) {
-            Transicion transicion = transiciones.get(i);
-            boolean habilitada = true;
-
-            for (int j = 0; j < this.dMenos[i].length; j++) {
-                if (this.dMenos[i][j] > this.marcacionInicial[j]) {
-                    habilitada = false;
-                    break;
-                }
-            }
-
-            if (habilitada) {
-                this.transicionesHabilitadas.add(transicion);
-            }
-        }
+        this.transicionesHabilitadas = (ArrayList<Transicion>) this.red.getTransiciones().stream()
+                .filter(t -> {
+                    int index = transicionIndex.get(t.getId());
+                    for (int j = 0; j < dMenos[index].length; j++) {
+                        if (dMenos[index][j] > marcacionInicial[j])
+                            return false;
+                    }
+                    return true;
+                }).collect(Collectors.toList());
     }
 
     public Petri dispararTransicion(String transicionId) {
         int transicionIdx = transicionIndex.get(transicionId);
 
         int[] nuevaMarcacion = this.marcacionInicial.clone();
+        ArrayList<Lugar> lugares = this.red.getLugares();
+        // imprimirVector(nuevaMarcacion);
 
         for (int j = 0; j < this.dMenos[transicionIdx].length; j++) {
             nuevaMarcacion[j] -= this.dMenos[transicionIdx][j];
             nuevaMarcacion[j] += this.dMas[transicionIdx][j];
+
+            Lugar lugar = lugares.get(j);
+            lugar.adjustTokens(this.dMas[transicionIdx][j], this.dMenos[transicionIdx][j]);
         }
+
+        // imprimirVector(nuevaMarcacion);
 
         Petri nuevaPetri = new Petri(this.red);
         nuevaPetri.marcacionInicial = nuevaMarcacion;
@@ -145,7 +150,7 @@ public class Petri {
 
         model.addColumn("Transiciones Habilitadas");
         for (Transicion transicion : this.transicionesHabilitadas) {
-            model.addRow(new Object[]{transicion.getId()});
+            model.addRow(new Object[] { transicion.getId() });
         }
 
         return model;

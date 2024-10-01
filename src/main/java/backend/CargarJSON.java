@@ -6,6 +6,7 @@ import java.io.FileReader;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import backend.entidades.Lugar;
 import backend.entidades.Red;
 import java.io.IOException;
 
@@ -27,6 +28,10 @@ public class CargarJSON {
         try (FileReader reader = new FileReader(this.file)) {
             // Convertir JSON a objeto
             Red red = gson.fromJson(reader, Red.class);
+
+            for (Lugar lugar : red.getLugares()) {
+                lugar.postDeserialization();
+            }
             return red;
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();

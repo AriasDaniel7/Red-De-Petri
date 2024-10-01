@@ -1,8 +1,10 @@
 package backend;
 
+import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultListenableGraph;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.swing.mxGraphComponent;
@@ -10,6 +12,7 @@ import com.mxgraph.util.mxConstants;
 
 import backend.entidades.Lugar;
 import backend.entidades.Transicion;
+import backend.entidades.Token;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -26,14 +29,15 @@ import javax.swing.SwingConstants;
  */
 public class GraficaPetri {
 
-    private DefaultDirectedGraph<String, DefaultEdge> grafo;
+    private ListenableGraph<String, DefaultEdge> grafo;
     private JGraphXAdapter<String, DefaultEdge> graphAdapter;
     private mxGraphComponent graphComponent;
     private Petri petri;
 
     public GraficaPetri(Petri petri) {
-        this.grafo = new DefaultDirectedGraph<>(DefaultEdge.class);
+        this.grafo = new DefaultListenableGraph<>(new DefaultDirectedGraph<>(DefaultEdge.class));
         this.graphAdapter = new JGraphXAdapter<>(grafo);
+        this.graphAdapter.setHtmlLabels(true); // Habilitar etiquetas HTML
         this.graphComponent = new mxGraphComponent(graphAdapter);
         this.petri = petri;
         crearGrafo();
@@ -48,16 +52,37 @@ public class GraficaPetri {
 
             ArrayList<Lugar> lugares = petri.getRed().getLugares();
             ArrayList<Transicion> transiciones = petri.getRed().getTransiciones();
-            int[] marcacion = petri.getMarcacionInicial();
+            // int[] marcacion = petri.getMarcacionInicial();
             int[][] dMas = petri.getdMas();
 
             Map<String, Object> vertexMap = new HashMap<>();
 
             for (int i = 0; i < lugares.size(); i++) {
                 Lugar lugar = lugares.get(i);
-                String etiqueta = lugar.getId() + " (" + marcacion[i] + ")";
-                Object vertex = graphAdapter.insertVertex(parent, null, etiqueta, 50, 50, 100, 100,
-                        "shape=ellipse;fillColor=#0094FF;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;");
+
+                // String etiqueta = lugar.getId() + " (" + marcacion[i] + ")";
+                // Object vertex = graphAdapter.insertVertex(parent, null, etiqueta, 50, 50,
+                // 100, 100,
+                // "shape=ellipse;fillColor=#0094FF;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;");
+                // vertexMap.put(lugar.getId(), vertex);
+
+                StringBuilder etiqueta = new StringBuilder();
+
+                etiqueta.append("<html><center>").append(lugar.getId()).append("<br>")
+                        .append("<div style='display: flex; flex-wrap: wrap;'>");
+
+                for (Token token : lugar.getTokens()) {
+                    etiqueta.append("<span style='color:").append(token.getColor())
+                            .append("; font-size: 25px; font-weight: bold;'>")
+                            .append("●")
+                            .append("</span>");
+                }
+
+                etiqueta.append("</div></center></html>");
+
+                Object vertex = graphAdapter.insertVertex(parent, null, etiqueta, 50, 50,
+                        100, 100,
+                        "shape=ellipse;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;");
                 vertexMap.put(lugar.getId(), vertex);
             }
 
@@ -102,7 +127,7 @@ public class GraficaPetri {
                     graphAdapter.setCellStyle(mxConstants.STYLE_FILLCOLOR + "=#FF0000;"
                             + mxConstants.STYLE_FONTCOLOR + "=#FFFFFF;"
                             + mxConstants.STYLE_FONTSTYLE + "=" + mxConstants.FONT_BOLD,
-                            new Object[]{cell}); // Cambiar color a rojo, letra blanca y negrita
+                            new Object[] { cell }); // Cambiar color a rojo, letra blanca y negrita
                     break;
                 }
             }
