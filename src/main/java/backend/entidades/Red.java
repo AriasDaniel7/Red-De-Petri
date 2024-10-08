@@ -36,4 +36,11 @@ public class Red {
         this.arcos = arcos;
     }
 
+    public ArrayList<Lugar> getLugaresClone() {
+        ArrayList<Lugar> lugaresClone = new ArrayList<>();
+        for (Lugar lugar : lugares) {
+            lugaresClone.add(lugar.clone());
+        }
+        return lugaresClone;
+    }
 }

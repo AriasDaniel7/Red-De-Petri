@@ -65,11 +65,10 @@ public class GraficaPetri {
                 // 100, 100,
                 // "shape=ellipse;fillColor=#0094FF;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;");
                 // vertexMap.put(lugar.getId(), vertex);
-
                 StringBuilder etiqueta = new StringBuilder();
 
                 etiqueta.append("<html><center>").append(lugar.getId()).append("<br>")
-                        .append("<div style='display: flex; flex-wrap: wrap;'>");
+                        .append("<div style='display: flex;'>");
 
                 for (Token token : lugar.getTokens()) {
                     etiqueta.append("<span style='color:").append(token.getColor())

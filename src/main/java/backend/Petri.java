@@ -3,6 +3,7 @@ package backend;
 import backend.entidades.Arco;
 import backend.entidades.Lugar;
 import backend.entidades.Red;
+import backend.entidades.Token;
 import backend.entidades.Transicion;
 
 import java.util.ArrayList;
@@ -89,7 +90,6 @@ public class Petri {
         // imprimirMatriz(dMenos);
         // System.out.println("Marcacion Inicial:");
         // imprimirVector(marcacionInicial);
-
     }
 
     private void calcularTransicionesHabilitadas() {
@@ -97,8 +97,9 @@ public class Petri {
                 .filter(t -> {
                     int index = transicionIndex.get(t.getId());
                     for (int j = 0; j < dMenos[index].length; j++) {
-                        if (dMenos[index][j] > marcacionInicial[j])
+                        if (dMenos[index][j] > marcacionInicial[j]) {
                             return false;
+                        }
                     }
                     return true;
                 }).collect(Collectors.toList());
@@ -109,17 +110,32 @@ public class Petri {
 
         int[] nuevaMarcacion = this.marcacionInicial.clone();
         ArrayList<Lugar> lugares = this.red.getLugares();
-        // imprimirVector(nuevaMarcacion);
+        ArrayList<Token> tokens = new ArrayList<>();
 
         for (int j = 0; j < this.dMenos[transicionIdx].length; j++) {
             nuevaMarcacion[j] -= this.dMenos[transicionIdx][j];
             nuevaMarcacion[j] += this.dMas[transicionIdx][j];
 
             Lugar lugar = lugares.get(j);
-            lugar.adjustTokens(this.dMas[transicionIdx][j], this.dMenos[transicionIdx][j]);
+
+            if (this.dMenos[transicionIdx][j] > 0 && !(this.dMenos[transicionIdx][j] == this.dMas[transicionIdx][j])) {
+                if (!lugar.getTokens().isEmpty()) {
+                    for (int i = 0; i < this.dMenos[transicionIdx][j]; i++) {
+                        Token token = lugar.getTokens().remove(lugar.getTokens().size() - 1);
+                        tokens.add(token);
+                    }
+                }
+            }
         }
 
-        // imprimirVector(nuevaMarcacion);
+        for (int j = 0; j < this.dMas[transicionIdx].length; j++) {
+            Lugar lugar = lugares.get(j);
+            if (this.dMas[transicionIdx][j] > 0 && this.dMenos[transicionIdx][j] == 0) {
+                for (int k = 0; k < this.dMas[transicionIdx][j]; k++) {
+                    lugar.addToken(tokens.get(0));
+                }
+            }
+        }
 
         Petri nuevaPetri = new Petri(this.red);
         nuevaPetri.marcacionInicial = nuevaMarcacion;
@@ -173,6 +189,30 @@ public class Petri {
             for (int j = 0; j < matriz[i].length; j++) {
                 fila[j + 1] = matriz[i][j];
             }
+            model.addRow(fila);
+        }
+
+        return model;
+    }
+
+    public DefaultTableModel obtenerDefaultTableModelTokens() {
+        ArrayList<Lugar> lugares = this.red.getLugares();
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("Lugar");
+        model.addColumn("Tokens");
+
+        for (Lugar lugar : lugares) {
+            Object[] fila = new Object[2];
+            fila[0] = lugar.getId();
+            StringBuilder tokensString = new StringBuilder();
+            for (Token token : lugar.getTokens()) {
+                String color = token.getColor();
+                String tokenId = token.getId();
+                tokensString.append("<span style='color:").append(color).append("; font-size: 12px;'>●</span>")
+                        .append("<span style='color:black;'>(").append(tokenId).append(")</span>").append(" ");
+            }
+            fila[1] = "<html>" + tokensString.toString() + "</html>";
             model.addRow(fila);
         }
 

@@ -1,6 +1,7 @@
 package backend.entidades;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 import java.util.ArrayList;
 
@@ -20,37 +21,36 @@ public class Lugar {
         this.tokens = new ArrayList<>();
     }
 
+    public Lugar(String id, Integer marcas, ArrayList<Token> tokens) {
+        this.id = id;
+        this.marcas = marcas;
+        this.tokens = tokens;
+    }
+
     public void postDeserialization() {
         if (this.tokens == null) {
             this.tokens = new ArrayList<>();
+            String color = colorRandom();
             for (int i = 0; i < this.marcas; i++) {
-                this.tokens.add(new Token(UUID.randomUUID().toString(), "#000000"));
+                this.tokens.add(new Token(UUID.randomUUID().toString().substring(0, 3), color));
             }
         }
     }
 
-    public void adjustTokens(int valorDmas, int valorDmenos) {
-        int tokenChange = valorDmas - valorDmenos;
-        for (Token token : tokens) {
-            token.setColor("#000000");
-            if (valorDmas > 0 && valorDmenos == valorDmas) {
-                token.setColor("#FF0000");
-            }
-        }
+    public void removeToken(Token token) {
+        this.tokens.remove(token);
+    }
 
-        if (tokenChange > 0) {
-            for (int i = 0; i < tokenChange; i++) {
-                tokens.add(new Token(UUID.randomUUID().toString(), "#FF0000"));
-            }
+    public String colorRandom() {
+        Random random = new Random();
+        int r = random.nextInt(256);
+        int g = random.nextInt(256);
+        int b = random.nextInt(256);
+        return String.format("#%02x%02x%02x", r, g, b);
+    }
 
-        } else {
-            for (int i = 0; i < -tokenChange; i++) {
-                if (!tokens.isEmpty()) {
-                    tokens.remove(tokens.size() - 1);
-                }
-            }
-        }
-
+    public void addToken(Token token) {
+        this.tokens.add(token);
     }
 
     public String getId() {
@@ -105,6 +105,15 @@ public class Lugar {
             return false;
         }
         return Objects.equals(this.tokens, other.tokens);
+    }
+
+    @Override
+    public Lugar clone() {
+        ArrayList<Token> tokensClone = new ArrayList<>();
+        for (Token token : tokens) {
+            tokensClone.add(token.clone());
+        }
+        return new Lugar(this.id, this.marcas, tokensClone);
     }
 
     @Override

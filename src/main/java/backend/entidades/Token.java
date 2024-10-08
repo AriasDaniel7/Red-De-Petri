@@ -59,6 +59,11 @@ public class Token {
     }
 
     @Override
+    public Token clone() {
+        return new Token(this.id, this.color);
+    }
+
+    @Override
     public String toString() {
         return "Token{" + "id=" + id + ", color=" + color + '}';
     }
