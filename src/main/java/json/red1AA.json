@@ -1,45 +1,30 @@
 {
   "lugares": [
-    {"id": "P1", "marcas": 3},
+    {"id": "P1", "marcas": 1},
     {"id": "P2", "marcas": 0},
     {"id": "P3", "marcas": 0},
-    {"id": "P4", "marcas": 4},
-    {"id": "P5", "marcas": 2},
-    {"id": "P6", "marcas": 0},
-    {"id": "P7", "marcas": 1},
-    {"id": "P8", "marcas": 0},
-    {"id": "P9", "marcas": 1},
-    {"id": "P10", "marcas": 0}
+    {"id": "P4", "marcas": 2},
+    {"id": "P5", "marcas": 1}
   ],
   "transiciones": [
     {"id": "t1"},
     {"id": "t2"},
     {"id": "t3"},
-    {"id": "t4"},
-    {"id": "t5"},
-    {"id": "t6"},
-    {"id": "t7"}
+    {"id": "t4"}
   ],
   "arcos": [
-    {"desde": "P1", "hacia": "t1", "peso": 2},
-    {"desde": "P2", "hacia": "t1", "peso": 1},
-    {"desde": "t1", "hacia": "P3", "peso": 3},
-    {"desde": "t1", "hacia": "P4", "peso": 1},
-    {"desde": "P4", "hacia": "t2", "peso": 2},
+    {"desde": "P1", "hacia": "t1", "peso": 1},
+    {"desde": "t1", "hacia": "P2", "peso": 1},
+    {"desde": "t1", "hacia": "P4", "peso": 2},
+    {"desde": "t1", "hacia": "P3", "peso": 1},
+    {"desde": "P2", "hacia": "t2", "peso": 1},
+    {"desde": "P4", "hacia": "t2", "peso": 1},
     {"desde": "P3", "hacia": "t2", "peso": 1},
-    {"desde": "t2", "hacia": "P5", "peso": 2},
-    {"desde": "t2", "hacia": "P6", "peso": 1},
-    {"desde": "P5", "hacia": "t3", "peso": 2},
-    {"desde": "t3", "hacia": "P7", "peso": 1},
-    {"desde": "P6", "hacia": "t4", "peso": 1},
-    {"desde": "P7", "hacia": "t4", "peso": 1},
-    {"desde": "t4", "hacia": "P8", "peso": 2},
-    {"desde": "P7", "hacia": "t5", "peso": 1},
-    {"desde": "t5", "hacia": "P9", "peso": 1},
-    {"desde": "P9", "hacia": "t6", "peso": 1},
-    {"desde": "t6", "hacia": "P10", "peso": 1},
-    {"desde": "P10", "hacia": "t7", "peso": 2},
-    {"desde": "t7", "hacia": "P4", "peso": 1},
-    {"desde": "t7", "hacia": "P3", "peso": 1}
+    {"desde": "t2", "hacia": "P2", "peso": 1},
+    {"desde": "P4", "hacia": "t3", "peso": 2},
+    {"desde": "t3", "hacia": "P5", "peso": 1},
+    {"desde": "P5", "hacia": "t4", "peso": 1},
+    {"desde": "t4", "hacia": "P4", "peso": 1},
+    {"desde": "t4", "hacia": "P3", "peso": 1}
   ]
 }
