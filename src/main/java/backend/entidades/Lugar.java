@@ -30,8 +30,8 @@ public class Lugar {
     public void postDeserialization() {
         if (this.tokens == null) {
             this.tokens = new ArrayList<>();
-            String color = colorRandom();
             for (int i = 0; i < this.marcas; i++) {
+                String color = colorRandom();
                 this.tokens.add(new Token(UUID.randomUUID().toString().substring(0, 3), color));
             }
         }
